@@ -98,55 +98,42 @@ void carregar_menu_principal()
         receber_opcao_sanitizada("Selecione uma das opções:");
         switch (opc)
         {
-
         case CARREGAR_MEMORIA_INSTRUCOES:
             puts("opc = CARREGAR_MEMORIA_INSTRUCOES");
-
             break;
         case CARREGAR_MEMORIA_DADOS:
             puts("opc = CARREGAR_MEMORIA_DADOS");
-
             break;
         case IMPRIMIR_MEMORIAS:
             puts("opc = IMPRIMIR_MEMORIAS");
-
             break;
         case IMPRIMIR_BANCO_REG:
             puts("opc = IMPRIMIR_BANCO_REG");
-
             break;
         case IMPRIMIR_TODO_SIMULADOR:
             puts("opc = IMPRIMIR_TODO_SIMULADOR");
-
             break;
         case SALVAR_ASM:
             puts("opc = SALVAR_ASM");
-
             break;
         case SALVAR_DAT:
             puts("opc = SALVAR_DAT");
-
             break;
         case EXECUTAR_PROGRAMA:
             puts("opc = EXECUTAR_PROGRAMA");
-
             break;
         case EXECUTA_INSTRUCAO:
             puts("opc = EXECUTA_INSTRUCAO");
-
             break;
         case VOLTAR_INSTRUCAO:
             puts("opc = VOLTAR_INSTRUCAO");
-
             break;
         case FECHAR:
             puts("mini-mips-info: Encerrando programa!");
             break;
         default:
             puts("mini-mips-err: opção inválida não reconhecida.");
-           
-            break;
-            
+            break;    
         }
         esperar(); // Usa o macro de esperar
     }
