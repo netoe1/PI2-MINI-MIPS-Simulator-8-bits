@@ -1,5 +1,4 @@
 #include "memoria.h"
-#include "conversor.h"
 #include <stdbool.h>
 
 
