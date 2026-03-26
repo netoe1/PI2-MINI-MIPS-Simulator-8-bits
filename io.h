@@ -1,8 +1,8 @@
 # ifndef IO_H
 # define IO_H
 
-# include <stdint.h>
-# include "types.h"
+#include <stdint.h>
+#include "types.h"
 
 #define MAX_INSTRUCOES 256
 #define TAMANHO_LINHA 18 // 16 bits + \n + \0
