@@ -63,7 +63,7 @@ static void executrar_ciclo(CPU *cpu)
 
 	// buscar instrucao
 	
-	instrucao = ler_memoria_instrucao(cpu, cpu->pc);
+	instrucao = ler_end_mem_instrucao(cpu, cpu->pc);
 	
 	// decodificar instrucao
 	instrucao_decodificada = decodificar_instrucao(instrucao);
@@ -81,8 +81,8 @@ static void executrar_ciclo(CPU *cpu)
 	resultadoUla = executar(operador_a, operador_b, sinais_de_controle.controle_ula);
 
 	// acesso a memoria
-	valor_lido_memoria = ler_memoria_dados(cpu, (uint8_t)(resultadoUla.resultado));
-	escrever_memoria_dados(cpu, resultadoUla.resultado, cpu->banco_de_regs[instrucao_decodificada.rt], sinais_de_controle);
+	valor_lido_memoria = ler_end_mem_dados(cpu, (uint8_t)(resultadoUla.resultado));
+	escrever_end_mem_dados(cpu, resultadoUla.resultado, cpu->banco_de_regs[instrucao_decodificada.rt], sinais_de_controle);
 
 	valor_write_back = mux_memoria_para_reg(sinais_de_controle, instrucao_decodificada, cpu, resultadoUla);
 
@@ -140,7 +140,7 @@ static int8_t mux_memoria_para_reg(
 {
 	if (sinais_de_controle.memoria_para_reg == 0)
 	{
-		return ler_memoria_dados(cpu, resultadoUla.resultado);
+		return ler_end_mem_dados(cpu, (uint8_t)(resultadoUla.resultado));
 	}
 	return resultadoUla.resultado;
 }
@@ -155,15 +155,23 @@ static void incrementar_pc(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDe
 static void debug(const InstrucaoDecodificada instrucao_decodificada, const SinaisDeControle sinais_de_controle, const ResultadoUla resultadoUla, const CPU *cpu)
 {	
 	printf("PC: %u\n", cpu->pc - 1);
-	printf("Instrução executada: %u\n", cpu->memoria_de_instrucao[cpu->pc - 1]);
-	printf("------------------- Instrução Decodificada: \n");
-	printf("Tipo: %u\n", instrucao_decodificada.tipo);
-	printf("Opcode: %u | ", instrucao_decodificada.opcode);
-	printf("RS: %u | ", instrucao_decodificada.rs);
-	printf("RT: %u | ", instrucao_decodificada.rt);
-	printf("RD: %u | ", instrucao_decodificada.rd);
-	printf("Funct: %u\n", instrucao_decodificada.funct);
-	printf("Imediato: %d\n", instrucao_decodificada.imediato);
+	printf("Instrução executada:");
+	int16_para_binario(cpu->memoria_de_instrucao[cpu->pc - 1]);
+	printf("\n------------------- Instrução Decodificada: \n");
+	printf("Tipo: ");
+	int8_para_binario(instrucao_decodificada.tipo);
+	printf("Opcode: ");
+	int8_para_binario(instrucao_decodificada.opcode);
+	printf("RS: ");
+	int8_para_binario(instrucao_decodificada.rs);
+
+	printf("RT: ");
+	int8_para_binario(instrucao_decodificada.rt);
+	printf("RD: ");
+	int8_para_binario(instrucao_decodificada.rd);
+	printf("Funct: ");
+	int8_para_binario(instrucao_decodificada.funct);
+	printf("\nImediato: %d\n", instrucao_decodificada.imediato);
 	printf("Endereco: %u\n", instrucao_decodificada.endereco);
 
 	printf("------------------- Sinais de Controle Gerados: \n");
@@ -191,12 +199,12 @@ static void debug(const InstrucaoDecodificada instrucao_decodificada, const Sina
 	printf("Zero: %u\n", resultadoUla.zero);
 	
 	printf("------------------- Banco de Registradores\n");
-	imprimir_registradores(cpu);
+	// implementar
 
 	printf("------------------- Memória de Instruções\n");
-	imprimir_memoria_instrucao(cpu);
+	//imprimir_memoria_instrucao(cpu);
 	printf("------------------- Memória de Dados\n");
-	imprimir_memoria_dados(cpu);
+	//imprimir_memoria_dados(cpu);
 
 	printf("PC novo: %u\n", cpu->pc);
 	printf("Instrução atual: %u\n", cpu->memoria_de_instrucao[cpu->pc]);
