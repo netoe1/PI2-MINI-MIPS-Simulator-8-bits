@@ -4,7 +4,6 @@
 #include "conversor.h"
 #include "controle.h"
 #include "ula.h"
-#include "banco_de_regs.h"
 #include "memoria.h"
 
 /*Funções auxiliares*/
