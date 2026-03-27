@@ -4,6 +4,6 @@
 # include <stdint.h>
 # include "types.h"
 
-SinaisDeControle gerarSinaisDeControle(uint8_t opcode);
+SinaisDeControle gerar_sinais_de_controle(uint8_t opcode, uint8_t funct);
 
 # endif
