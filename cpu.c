@@ -10,7 +10,7 @@
 static void iniciar_cpu(CPU *cpu);
 static void executrar_ciclo(CPU *cpu);
 static void incrementar_pc(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla);
-static uint16_t buscar_instrucao(const CPU *cpu);
+//static uint16_t buscar_instrucao(const CPU *cpu);
 static uint8_t mux_reg_destino(const SinaisDeControle sinais_de_controle, const InstrucaoDecodificada instrucao_decodificada);
 static int8_t mux_fonte_ula(const SinaisDeControle sinais_de_controle, const InstrucaoDecodificada instrucao_decodificada, const CPU *cpu);
 static int8_t mux_memoria_para_reg(
@@ -57,7 +57,7 @@ static void executrar_ciclo(CPU *cpu)
 	int8_t operador_a;		 // read register 1
 	int8_t operador_b;		 // read register 2 ou imediato
 	int8_t valor_write_back; // valor a ser escrito no banco de registradores
-	int8_t valor_lido_memoria; // valor lido da memória (para lw)
+	//int8_t valor_lido_memoria; // valor lido da memória (para lw)
 	uint8_t registrador_destino;
 	ResultadoUla resultadoUla;
 
@@ -81,7 +81,7 @@ static void executrar_ciclo(CPU *cpu)
 	resultadoUla = executar(operador_a, operador_b, sinais_de_controle.controle_ula);
 
 	// acesso a memoria
-	valor_lido_memoria = ler_end_mem_dados(cpu, (uint8_t)(resultadoUla.resultado));
+	//valor_lido_memoria = ler_end_mem_dados(cpu, (uint8_t)(resultadoUla.resultado));
 	escrever_end_mem_dados(cpu, resultadoUla.resultado, cpu->banco_de_regs[instrucao_decodificada.rt], sinais_de_controle);
 
 	valor_write_back = mux_memoria_para_reg(sinais_de_controle, instrucao_decodificada, cpu, resultadoUla);

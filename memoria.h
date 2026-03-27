@@ -27,7 +27,7 @@ typedef enum{
 
 #pragma region MEMORIA_DADOS
 
-int8_t ler_end_mem_dados(CPU *p,uint16_t addr);                     // Retonar o valor daquele endereço
+int8_t ler_end_mem_dados(const CPU *p,uint16_t addr);                     // Retonar o valor daquele endereço
 void escrever_end_mem_dados(CPU *p,uint8_t addr,int8_t valor, SinaisDeControle sinais_de_controle);     // Escreve o valor no endereço                                                                       
                       
 #pragma endregion MEMORIA_DADOS
@@ -35,7 +35,7 @@ void escrever_end_mem_dados(CPU *p,uint8_t addr,int8_t valor, SinaisDeControle s
 
 #pragma region MEMORIA_INSTRUCAO
 
-uint16_t ler_end_mem_instrucao(CPU *p,uint16_t addr); 
+uint16_t ler_end_mem_instrucao(const CPU *p,uint16_t addr); 
 void escrever_end_mem_instrucao(CPU *p,uint16_t addr,uint16_t valor); 
 
 #pragma endregion MEMORIA_INSTRUCAO
@@ -45,7 +45,7 @@ void escrever_end_mem_instrucao(CPU *p,uint16_t addr,uint16_t valor);
 void escrever_registrador(CPU *p, uint8_t id,int8_t valor, SinaisDeControle sinais_de_controle);     // Escrever em registrador
 int8_t ler_registrador(const CPU *p, uint8_t id);                 // Ler registrador
 
-#pragma end region REGISTRADORES
+#pragma endregion REGISTRADORES
 
 #pragma region FUNCOES_GENERICAS
 

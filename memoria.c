@@ -5,7 +5,7 @@
 #pragma region MEMORIA_DE_DADOS
 
 
-int8_t ler_end_mem_dados(CPU *p,uint16_t addr){
+int8_t ler_end_mem_dados(const CPU *p,uint16_t addr){
     return p->memoria_de_dados[addr];
 }                
 void escrever_end_mem_dados(CPU *p,uint8_t addr,int8_t valor, SinaisDeControle sinais_de_controle){
@@ -17,7 +17,7 @@ void escrever_end_mem_dados(CPU *p,uint8_t addr,int8_t valor, SinaisDeControle s
 
 #pragma region MEMORIA_DE_INSTRUCAO
 
-uint16_t ler_end_mem_instrucao(CPU *p,uint16_t addr){
+uint16_t ler_end_mem_instrucao(const CPU *p,uint16_t addr){
     return p->memoria_de_instrucao[addr];
 }
 void escrever_end_mem_instrucao(CPU *p,uint16_t addr,uint16_t valor){ // Não sei se terá uso.
