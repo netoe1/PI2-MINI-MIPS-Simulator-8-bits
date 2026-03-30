@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "io.h"
-#include "conversor.h"
+#include "utils.h"
 
 /* Auxiliares de Leitura */
 static void verificar_erro_ao_abrir_arquivo(FILE *file);

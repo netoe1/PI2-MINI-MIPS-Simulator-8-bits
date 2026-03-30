@@ -5,11 +5,13 @@
 #include "controle.h"
 #include "ula.h"
 #include "memoria.h"
+#include "utils.h"
 
 /*Funções auxiliares*/
 static void iniciar_cpu(CPU *cpu);
 static void executrar_ciclo(CPU *cpu);
-static void incrementar_pc(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla);
+static void incrementar_pc(CPU *cpu, SinaisDeControle sinais_de_controle);
+static void resolver_desvio(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla);
 //static uint16_t buscar_instrucao(const CPU *cpu);
 static uint8_t mux_reg_destino(const SinaisDeControle sinais_de_controle, const InstrucaoDecodificada instrucao_decodificada);
 static int8_t mux_fonte_ula(const SinaisDeControle sinais_de_controle, const InstrucaoDecodificada instrucao_decodificada, const CPU *cpu);
@@ -54,45 +56,43 @@ static void executrar_ciclo(CPU *cpu)
 	InstrucaoDecodificada instrucao_decodificada;
 	SinaisDeControle sinais_de_controle;
 
-	int8_t operador_a;		 // read register 1
-	int8_t operador_b;		 // read register 2 ou imediato
-	int8_t valor_write_back; // valor a ser escrito no banco de registradores
-	//int8_t valor_lido_memoria; // valor lido da memória (para lw)
-	uint8_t registrador_destino;
-	ResultadoUla resultadoUla;
+	int8_t operador_a;		 // Read register 1
+	int8_t operador_b;		 // Read register 2 ou imediato
+	int8_t valor_write_back; // valor a ser escrito no banco de registradores (DMem ou ResultadoUla)
+	uint8_t registrador_destino_indice; // índice do registrador a ser escrito no banco de registradores, selecionado pelo mux RegDest
+	ResultadoUla resultadoUla; // Resultado das operações da ULA, incluindo o resultado e o sinal de zero (para branch)
 
-	// buscar instrucao
-	
+	// Buscar instrucao 
 	instrucao = ler_end_mem_instrucao(cpu, cpu->pc);
+	
+	// Decodificar instrucao 
 	instrucao_decodificada = decodificar_instrucao(instrucao);
-	incrementar_pc(cpu, instrucao_decodificada.imediato, instrucao_decodificada.endereco, sinais_de_controle, resultadoUla); 
-	
-	// decodificar instrucao
-	
-
-	// gera os sinais de controle de acordo com a instrucao decodificada
 	sinais_de_controle = gerar_sinais_de_controle(instrucao_decodificada.opcode, instrucao_decodificada.funct);
+
+	// PC = PC + 1;
+    incrementar_pc(cpu, sinais_de_controle); 
 
 	// mux da arquitetura que vai selecionar o RegDest (indica o registrador a ser escrito no banco de regs)
 	// ele escolhe entre o campo rd ou rt da instrução decodificada, dependendo do tipo da instrução (R ou I).
-	registrador_destino = mux_reg_destino(sinais_de_controle, instrucao_decodificada);
+	registrador_destino_indice = mux_reg_destino(sinais_de_controle, instrucao_decodificada);
+
+	// valores que serão operados na ula: _a RS, _b RT ou imediato dependendo do tipo da instrução (R ou I)
 	operador_a = ler_registrador(cpu, instrucao_decodificada.rs);
 	operador_b = mux_fonte_ula(sinais_de_controle, instrucao_decodificada, cpu);
 	
-	// execucao
+	// Execucao 
 	resultadoUla = executar(operador_a, operador_b, sinais_de_controle.controle_ula);
 
-	// acesso a memoria
-	//valor_lido_memoria = ler_end_mem_dados(cpu, (uint8_t)(resultadoUla.resultado));
+	// acesso a memoria 
 	escrever_end_mem_dados(cpu, resultadoUla.resultado, cpu->banco_de_regs[instrucao_decodificada.rt], sinais_de_controle);
-
 	valor_write_back = mux_memoria_para_reg(sinais_de_controle, instrucao_decodificada, cpu, resultadoUla);
 
-	// write back
-	escrever_registrador(cpu, registrador_destino, valor_write_back, sinais_de_controle);
+	// write back 
+	escrever_registrador(cpu, registrador_destino_indice, valor_write_back, sinais_de_controle);
 
 	// >>>> TO DO: Verificar se o incremento do PC deve ser feito antes 	<<<<
 	// >>>>	ou depois do write back,por causa dos desvios (branch/jump) <<<<
+	resolver_desvio(cpu, instrucao_decodificada.imediato, instrucao_decodificada.endereco, sinais_de_controle, resultadoUla);
 	
 	debug(instrucao_decodificada, sinais_de_controle, resultadoUla, cpu);
 	
@@ -147,11 +147,15 @@ static int8_t mux_memoria_para_reg(
 	return resultadoUla.resultado;
 }
 
-static void incrementar_pc(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla) {
+static void incrementar_pc(CPU *cpu, SinaisDeControle sinais_de_controle) {
 	if (sinais_de_controle.incremento_pc == 1) {
 		//printf("Incrementando PC. Valor atual: %u\n", cpu->pc);
 		cpu->pc += 1; // Incrementa o PC para a próxima instrução
 	}
+}
+
+static void resolver_desvio(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla) {
+	// APLICAR AQUI O BRANCH E JUMP PARA O PC
 }
 
 static void debug(const InstrucaoDecodificada instrucao_decodificada, const SinaisDeControle sinais_de_controle, const ResultadoUla resultadoUla, const CPU *cpu)
