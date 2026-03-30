@@ -11,6 +11,7 @@ int8_t ler_end_mem_dados(const CPU *p,uint16_t addr){
 void escrever_end_mem_dados(CPU *p,uint8_t addr,int8_t valor, SinaisDeControle sinais_de_controle){
     if (sinais_de_controle.escrever_memoria == 0) return;
     p->memoria_de_dados[addr] = (uint8_t) valor;
+    printf("mini-mips: A memória [%u] tem um novo valor: %d\n",addr,valor);
 } 
 
 #pragma endregion MEMORIA_DE_DADOS

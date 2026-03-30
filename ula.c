@@ -1,4 +1,5 @@
 # include "ula.h"
+#include <stdio.h>
 
 static int8_t operacao_add(int8_t a, int8_t b);
 
@@ -20,6 +21,7 @@ static void executar_operacoes(int8_t operador, int8_t operador2, uint8_t contro
             break;;
         default:
             // Operação desconhecida ou ainda não implementada, definir resultado como zero ou algum valor padrão
+            printf("Operação da ULA ainda não implementada. \n");
             resultadoUla->resultado = 0; 
             break;
     }

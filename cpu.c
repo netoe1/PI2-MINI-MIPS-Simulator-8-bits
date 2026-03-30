@@ -64,6 +64,7 @@ static void executrar_ciclo(CPU *cpu)
 	// buscar instrucao
 	
 	instrucao = ler_end_mem_instrucao(cpu, cpu->pc);
+	incrementar_pc(cpu, instrucao_decodificada.imediato, instrucao_decodificada.endereco, sinais_de_controle, resultadoUla); 
 	
 	// decodificar instrucao
 	instrucao_decodificada = decodificar_instrucao(instrucao);
@@ -76,7 +77,7 @@ static void executrar_ciclo(CPU *cpu)
 	registrador_destino = mux_reg_destino(sinais_de_controle, instrucao_decodificada);
 	operador_a = ler_registrador(cpu, instrucao_decodificada.rs);
 	operador_b = mux_fonte_ula(sinais_de_controle, instrucao_decodificada, cpu);
-
+	
 	// execucao
 	resultadoUla = executar(operador_a, operador_b, sinais_de_controle.controle_ula);
 
@@ -91,7 +92,7 @@ static void executrar_ciclo(CPU *cpu)
 
 	// >>>> TO DO: Verificar se o incremento do PC deve ser feito antes 	<<<<
 	// >>>>	ou depois do write back,por causa dos desvios (branch/jump) <<<<
-	incrementar_pc(cpu, instrucao_decodificada.imediato, instrucao_decodificada.endereco, sinais_de_controle, resultadoUla); 
+	
 	debug(instrucao_decodificada, sinais_de_controle, resultadoUla, cpu);
 	
 }
@@ -147,7 +148,7 @@ static int8_t mux_memoria_para_reg(
 
 static void incrementar_pc(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla) {
 	if (sinais_de_controle.incremento_pc == 1) {
-		printf("Incrementando PC. Valor atual: %u\n", cpu->pc);
+		//printf("Incrementando PC. Valor atual: %u\n", cpu->pc);
 		cpu->pc += 1; // Incrementa o PC para a próxima instrução
 	}
 }
@@ -155,58 +156,58 @@ static void incrementar_pc(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDe
 static void debug(const InstrucaoDecodificada instrucao_decodificada, const SinaisDeControle sinais_de_controle, const ResultadoUla resultadoUla, const CPU *cpu)
 {	
 	printf("PC: %u\n", cpu->pc - 1);
-	printf("Instrução executada:");
+	printf("Instrução executada: ");
 	int16_para_binario(cpu->memoria_de_instrucao[cpu->pc - 1]);
-	printf("\n------------------- Instrução Decodificada: \n");
+	printf("\n======= Instrução Decodificada ======= \n");
 	printf("Tipo: ");
 	int8_para_binario(instrucao_decodificada.tipo);
-	printf("Opcode: ");
+	printf(" Opcode: ");
 	int8_para_binario(instrucao_decodificada.opcode);
-	printf("RS: ");
+	printf("\n RS: ");
 	int8_para_binario(instrucao_decodificada.rs);
 
-	printf("RT: ");
+	printf(" RT: ");
 	int8_para_binario(instrucao_decodificada.rt);
-	printf("RD: ");
+	printf("\n RD: ");
 	int8_para_binario(instrucao_decodificada.rd);
-	printf("Funct: ");
+	printf(" Funct: ");
 	int8_para_binario(instrucao_decodificada.funct);
 	printf("\nImediato: %d\n", instrucao_decodificada.imediato);
 	printf("Endereco: %u\n", instrucao_decodificada.endereco);
 
-	printf("------------------- Sinais de Controle Gerados: \n");
-	printf("\nControle ULA: ");
+	printf("======= Sinais de Controle Gerados ======= \n");
+	printf("Controle ULA: ");
 	int8_para_binario(sinais_de_controle.controle_ula);
-	printf("\nEscrever Memoria:");
+	printf("\nEscrever Memoria: ");
 	int8_para_binario(sinais_de_controle.escrever_memoria);
-	printf("\nEscrever Reg:");
+	printf("\nEscrever Reg: ");
 	int8_para_binario(sinais_de_controle.escrever_reg);
-	printf("\nMemoria para Reg:");
+	printf("\nMemoria para Reg: ");
 	int8_para_binario(sinais_de_controle.memoria_para_reg);
-	printf("\nULA Fonte:");
+	printf("\nULA Fonte: ");
 	int8_para_binario(sinais_de_controle.ula_fonte);
-	printf("\nReg Destino:");
+	printf("\nReg Destino: ");
 	int8_para_binario(sinais_de_controle.reg_destino);
-	printf("\nIncremento PC:");
+	printf("\nIncremento PC: ");
 	int8_para_binario(sinais_de_controle.incremento_pc);
 	printf("\nJump:");
 	int8_para_binario(sinais_de_controle.jump);
 	printf("\nBranch:");
 	int8_para_binario(sinais_de_controle.branch);
 
-	printf("------------------- Resultado da Operação na Ula\n");
+	printf("\n======= Resultado da Operação na Ula =======\n");
 	printf("Resultado: %d\n", resultadoUla.resultado);
 	printf("Zero: %u\n", resultadoUla.zero);
 	
-	printf("------------------- Banco de Registradores\n");
+	printf("======= Banco de Registradores =======\n");
 	// implementar
 
-	printf("------------------- Memória de Instruções\n");
+	//printf("======= Memória de Instruções =======\n");
 	//imprimir_memoria_instrucao(cpu);
-	printf("------------------- Memória de Dados\n");
+	//printf("======= Memória de Dados =======\n");
 	//imprimir_memoria_dados(cpu);
 
-	printf("PC novo: %u\n", cpu->pc);
+	printf("PC novo: %u | ", cpu->pc);
 	printf("Instrução atual: %u\n", cpu->memoria_de_instrucao[cpu->pc]);
 
 	

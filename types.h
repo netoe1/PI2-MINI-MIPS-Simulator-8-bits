@@ -33,7 +33,7 @@ typedef enum {
   OP_LW = 0b011,
   OP_SW = 0b111,
   OP_BEQ = 0b110,
-  JUMP = 0b100
+  JUMP = 0b000
 } OperacaoUla;
 
 typedef enum {
