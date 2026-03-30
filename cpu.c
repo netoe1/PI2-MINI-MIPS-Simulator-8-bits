@@ -64,10 +64,11 @@ static void executrar_ciclo(CPU *cpu)
 	// buscar instrucao
 	
 	instrucao = ler_end_mem_instrucao(cpu, cpu->pc);
+	instrucao_decodificada = decodificar_instrucao(instrucao);
 	incrementar_pc(cpu, instrucao_decodificada.imediato, instrucao_decodificada.endereco, sinais_de_controle, resultadoUla); 
 	
 	// decodificar instrucao
-	instrucao_decodificada = decodificar_instrucao(instrucao);
+	
 
 	// gera os sinais de controle de acordo com a instrucao decodificada
 	sinais_de_controle = gerar_sinais_de_controle(instrucao_decodificada.opcode, instrucao_decodificada.funct);
