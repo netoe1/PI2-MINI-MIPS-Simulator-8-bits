@@ -6,6 +6,9 @@
 #include <stdint.h>
 
 
-void converter_para_asm(uint16_t instrução);
+//  Recebe a Instrução já decodificada pelo decodificador, realiza a conversão
+// e retorna em formato de string para ser adicionado ao arquivo.
+
+void converter_para_asm(InstrucaoDecodificada instr, char *retorno);
 
 #endif
