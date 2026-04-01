@@ -82,7 +82,7 @@ CPU cpu;
 int main(void)
 {
 
-	inicializar_cpu(&cpu);
+	
     setlocale(LC_ALL, ""); // netoe1: Suporte a acentos
     carregar_menu_principal();
     return EXIT_SUCCESS; // EXIT_SUCCESS é um label definido para 0.
@@ -107,6 +107,7 @@ void carregar_menu_principal()
         switch (opc)
         {
         case CARREGAR_MEMORIA_INSTRUCOES:
+            inicializar_cpu(&cpu);
             carregar_instrucoes("memoria1.mem", cpu.memoria_de_instrucao);
             break;
         case CARREGAR_MEMORIA_DADOS:
@@ -128,7 +129,7 @@ void carregar_menu_principal()
             puts("opc = SALVAR_DAT");
             break;
         case EXECUTAR_PROGRAMA:
-            puts("opc = EXECUTAR_PROGRAMA");
+            executar_cpu(&cpu);
             break;
         case EXECUTA_INSTRUCAO:
             avancar_cpu(&cpu);

@@ -10,6 +10,7 @@
 /*Funções auxiliares*/
 static void iniciar_cpu(CPU *cpu);
 static void executrar_ciclo(CPU *cpu);
+static void executar_programa_completo(CPU *cpu);
 static void incrementar_pc(CPU *cpu, SinaisDeControle sinais_de_controle);
 static void resolver_desvio(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla);
 //static uint16_t buscar_instrucao(const CPU *cpu);
@@ -35,7 +36,9 @@ void avancar_cpu(CPU *cpu)
 }
 
 /* Executa todo o programa */
-void executar_cpu(CPU *cpu) {}
+void executar_cpu(CPU *cpu) {
+	executar_programa_completo(cpu);
+}
 
 /* Inicializar colocando zerando os regs e memorias colocando em um estado inicial */
 void inicializar_cpu(CPU *cpu)
@@ -98,6 +101,12 @@ static void executrar_ciclo(CPU *cpu)
 	
 }
 
+static void executar_programa_completo(CPU *cpu) {
+	while (cpu->memoria_de_instrucao[cpu->pc] != 0) {
+		executrar_ciclo(cpu);
+	}
+}
+
 static void iniciar_cpu(CPU *cpu)
 {
 	int posicao;
@@ -148,6 +157,11 @@ static int8_t mux_memoria_para_reg(
 }
 
 static void incrementar_pc(CPU *cpu, SinaisDeControle sinais_de_controle) {
+
+	if (cpu->pc >= 256) {
+		return; // Evita incrementar o PC além do limite da memória de instruções
+	}
+
 	if (sinais_de_controle.incremento_pc == 1) {
 		//printf("Incrementando PC. Valor atual: %u\n", cpu->pc);
 		cpu->pc += 1; // Incrementa o PC para a próxima instrução
