@@ -15,13 +15,11 @@
 void set_debug(bool ativar);
 
 // Debug antigo para mostrar para teste
-void debug_legacy(
+void debug(
     const InstrucaoDecodificada instrucao_decodificada,
     const SinaisDeControle sinais_de_controle,
     const ResultadoUla resultadoUla, const CPU *cpu);
 
-// Funcões de print de inteiros <stdint.h> para binário.
-void print_int16_binario(int16_t valor);
-void print_int8_binario(int8_t valor);
+void estado_atual_cpu(const CPU *cpu);
 
 #endif

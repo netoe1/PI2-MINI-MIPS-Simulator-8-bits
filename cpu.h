@@ -3,7 +3,7 @@
 
 #include "types.h"
 #include <stdint.h>
-
+#include <stdbool.h>
         
 void resetar_cpu(CPU *cpu);
 void avancar_cpu(CPU *cpu);

@@ -5,6 +5,8 @@
 #include "io.h"
 #include "types.h"
 #include "cpu.h"
+#include "debug.h"
+#include <stdbool.h>
 
 #pragma region MACROS
 
@@ -41,6 +43,7 @@ char *MENU_BUF =
     "8.  Executa Programa (run) \n"
     "9.  Executa uma instrução (Step) \n"
     "10. Volta uma instrução (Back) \n"
+    "11. Ativar Debug\n"
     "0.  Encerrar \n"
     "========================================================================";
 
@@ -58,7 +61,8 @@ typedef enum
     SALVAR_DAT,
     EXECUTAR_PROGRAMA,
     EXECUTA_INSTRUCAO,
-    VOLTAR_INSTRUCAO
+    VOLTAR_INSTRUCAO,
+    ATIVAR_DEBUG
 
 } EOpcoes;
 
@@ -82,9 +86,10 @@ CPU cpu;
 int main(void)
 {
 
-	
+	 // Variável de controle do debug, por padrão, é false.
     setlocale(LC_ALL, ""); // netoe1: Suporte a acentos
     carregar_menu_principal();
+    
     return EXIT_SUCCESS; // EXIT_SUCCESS é um label definido para 0.
 }
 
@@ -97,12 +102,14 @@ void carregar_menu_principal()
     // Opc é uma variável global declarada nos blocos de constantes.
     // Executa um loop e usa um switch para verificar as opções.
     // OBS: opc tem o valor = -1 para entrar no loop
-
+    bool debugAtivado = false;
     while (opc != FECHAR)
     {
         limparTela();
         // netoe1: Dá o print da constate criada na REGION
+        
         puts(MENU_BUF);
+        estado_atual_cpu(&cpu);
         receber_opcao_sanitizada("Selecione uma das opções:");
         switch (opc)
         {
@@ -137,6 +144,10 @@ void carregar_menu_principal()
         case VOLTAR_INSTRUCAO:
             puts("opc = VOLTAR_INSTRUCAO");
             break;
+        case ATIVAR_DEBUG:
+            debugAtivado = !debugAtivado; // Alterna o estado do debug
+            set_debug(debugAtivado); // Alterna o estado do debug
+            break;
         case FECHAR:
             puts("mini-mips-info: Encerrando programa!");
             break;
@@ -144,6 +155,7 @@ void carregar_menu_principal()
             puts("mini-mips-err: opção inválida não reconhecida.");
             break;    
         }
+        
         esperar(); // Usa o macro de esperar
     }
 }
