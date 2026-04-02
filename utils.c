@@ -45,7 +45,6 @@ int16_t binario_para_int16(const char *binario) {
     return (int16_t)strtoul(binario, NULL, 2);
 }
 
-
 uint16_t binario_para_int16_sem_sinal(const char *binario) {
     return (uint16_t)strtoul(binario, NULL, 2);
 }

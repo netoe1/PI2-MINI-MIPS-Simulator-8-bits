@@ -13,6 +13,12 @@ typedef enum{
     REGISTRADOR
 }TipoMemoria;
 
+typedef enum {
+    DECIMAL,
+    HEXADECIMAL, 
+    BINARIO
+}OpcaoBase;
+
 #pragma endregion CONSTANTES
 
 // Modelagem:
@@ -49,7 +55,7 @@ int8_t ler_registrador(const CPU *p, uint8_t id);                 // Ler registr
 
 #pragma region FUNCOES_GENERICAS
 
-void imprimirMemoria(CPU *p, TipoMemoria tipo);     // Mostra todos os dados da memória
+void imprimirMemoria(CPU *p, TipoMemoria tipo, OpcaoBase base);     // Mostra todos os dados da memória
 void resetarMemoria(CPU *p, TipoMemoria tipo);      // Reseta a memória de acordo com o seu tipo, irá zerar todos os dados.
 
 #pragma endregion FUNCOES_GENERICAS

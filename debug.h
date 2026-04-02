@@ -1,6 +1,8 @@
 #ifndef DEBUG_H
 #define DEBUG_H
+
 #include "cpu.h"
+#include <stdbool.h>
 
 #define PREFIX "mini-mips"
 #define PREFIX_ERRO "mini-mips-err"
@@ -15,11 +17,26 @@
 void set_debug(bool ativar);
 
 // Debug antigo para mostrar para teste
-void debug(
+void debug_legacy(
     const InstrucaoDecodificada instrucao_decodificada,
     const SinaisDeControle sinais_de_controle,
     const ResultadoUla resultadoUla, const CPU *cpu);
+    
+// Esse só vai funcionar se ativar o set_debug para true
+void debug_geral(
+    const InstrucaoDecodificada inst,
+    const SinaisDeControle sinais,
+    const ResultadoUla ula,
+    const CPU *cpu,
+    int opcao);
+    // opcao: 0 = Decimal, 1 = Hexa, 2 = Binario
 
-void estado_atual_cpu(const CPU *cpu);
+// Funcões de print de inteiros <stdint.h> para binário e hexadecimal
+void print_int16_binario(int16_t valor);
+void print_int8_binario(int8_t valor);
+void print_int8_hexa(int8_t valor);
+void print_int16_hexa(int16_t valor);
+void debug_binario();
+void debug_cpu();
 
 #endif
