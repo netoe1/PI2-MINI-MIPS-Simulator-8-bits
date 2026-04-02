@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "conversor.h"
 #include "decodificador.h"
+#include "types.h"
 #include <string.h>
 
 // netoe1-task:Implementar conversão de binario para Assembly Conversor

@@ -1,6 +1,7 @@
 #ifndef CONVERSOR_H
 #define CONVERSOR_H
 
+#include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
