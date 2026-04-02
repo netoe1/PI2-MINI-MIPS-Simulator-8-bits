@@ -169,7 +169,23 @@ static void incrementar_pc(CPU *cpu, SinaisDeControle sinais_de_controle) {
 }
 
 static void resolver_desvio(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla) {
-	// APLICAR AQUI O BRANCH E JUMP PARA O PC
+	
+	if (sinais_de_controle.jump) {
+        cpu->pc = endereco;
+        return;
+    }
+
+	if (sinais_de_controle.branch) {
+        if (resultadoUla.zero) {
+            cpu->pc = cpu->pc + imediato; //zero = 1 
+        } 
+		else {
+            if (sinais_de_controle.incremento_pc){
+				cpu->pc++; //zero = 0
+			}
+        }
+        return;
+    }
 }
 
 static void debug(const InstrucaoDecodificada instrucao_decodificada, const SinaisDeControle sinais_de_controle, const ResultadoUla resultadoUla, const CPU *cpu)

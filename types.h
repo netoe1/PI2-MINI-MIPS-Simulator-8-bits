@@ -76,6 +76,7 @@ typedef struct {
 typedef struct {
     int8_t resultado;
     uint8_t zero;
+    uint8_t overflow;
 } ResultadoUla;
 
 #endif
