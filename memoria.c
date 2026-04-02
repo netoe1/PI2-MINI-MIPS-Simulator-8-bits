@@ -62,41 +62,45 @@ int8_t ler_registrador(const CPU *p, uint8_t id){
 // Nas funçoes genéricas, você deve especificar o ponteiro da CPU e o tipo de memória.
 // A memória pode ser DADOS,INSTRUCAO ou REGISTRADOR
 
-void imprimirMemoria(CPU *p, TipoMemoria tipo){
-    if(tipo == DADOS){
-        puts("++++++++++MEMÓRIA DE DADOS++++++++++");
-        puts("++++++++++END----VALOR++++++++++");
-
-        for(int i = 0; i < 256;i++){
-            printf("%3d [%3d]",i, p->memoria_de_dados[i]);
+void imprimirMemoria(CPU *p, TipoMemoria tipo, OpcaoBase base) {
+    if (tipo == DADOS) {
+        puts("\n++++++++++ MEMÓRIA DE DADOS ++++++++++");
+        for (int i = 0; i < 256; i++) {
+            printf("%3d: ", i);
+            if (base == HEXADECIMAL) print_int16_hexa(p->memoria_de_dados[i]);
+            else if (base == BINARIO) print_int16_binario(p->memoria_de_dados[i]);
+            else printf("%d", p->memoria_de_dados[i]);
+            printf(i % 4 == 3 ? "\n" : " | "); // Organiza em colunas como no Logisim
         }
-        puts("++++++++++++++++++++++++++++++++");
-        return;
-    }
-    else if(tipo == INSTRUCAO){
-        puts("++++++++++MEMÓRIA DE PROGRAMA++++++++++");
-        puts("++++++++++END----VALOR++++++++++");
-
-        for(int i = 0; i < 256;i++){
-            printf("%3d [%3d]",i, p->memoria_de_instrucao[i]);
+        puts("\n++++++++++++++++++++++++++++++++++++++");
+    } 
+    else if (tipo == INSTRUCAO) {
+        puts("\n++++++++++ MEMÓRIA DE PROGRAMA ++++++++++");
+        for (int i = 0; i < 256; i++) {
+            printf("%3d: ", i);
+            if (base == HEXADECIMAL) print_int16_hexa(p->memoria_de_instrucao[i]);
+            else if (base == BINARIO) print_int16_binario(p->memoria_de_instrucao[i]);
+            else printf("%d", p->memoria_de_instrucao[i]);
+            printf(i % 4 == 3 ? "\n" : " | ");
         }
-        puts("++++++++++++++++++++++++++++++++");
-        return;
-    }
-    else if(tipo == REGISTRADOR){
-        puts("++++++++++BANCO DE REGS++++++++++");
-        puts("++++++++++REG----VALOR++++++++++");
-
-        for(int i = 0; i < 8;i++){
-            printf("%3d [%3d]",i,p->banco_de_regs[i]);
+        puts("\n+++++++++++++++++++++++++++++++++++++++++");
+    } 
+    else if (tipo == REGISTRADOR) {
+        puts("\n++++++++++ BANCO DE REGS ++++++++++");
+        for (int i = 0; i < 8; i++) {
+            printf("R%d: ", i);
+            if (base == HEXADECIMAL) print_int8_hexa(p->banco_de_regs[i]);
+            else if (base == BINARIO) print_int8_binario(p->banco_de_regs[i]);
+            else printf("%d", p->banco_de_regs[i]);
+            printf(i % 2 == 1 ? "\n" : " | "); // 2 por linha para ficar legível
         }
-        puts("++++++++++++++++++++++++++++++++");
-        return;
+        puts("+++++++++++++++++++++++++++++++++++");
+    } 
+    else {
+        puts("mini-mips: Enum inválido para TipoMemória.");
     }
-    
-    puts("mini-mips: Enum inválido para TipoMemória.");
-   
 }
+
 void resetarMemoria(CPU *p, TipoMemoria tipo){
      if(tipo == DADOS){
         for(int i = 0; i < 256;i++){
