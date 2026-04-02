@@ -169,7 +169,7 @@ static void incrementar_pc(CPU *cpu, SinaisDeControle sinais_de_controle) {
 }
 
 static void resolver_desvio(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisDeControle sinais_de_controle, ResultadoUla resultadoUla) {
-	
+	printf("Verificando desvios. Jump: %u, Branch: %u\n", sinais_de_controle.jump, sinais_de_controle.branch);
 	if (sinais_de_controle.jump) {
         cpu->pc = endereco;
         return;
@@ -177,13 +177,9 @@ static void resolver_desvio(CPU *cpu, int8_t imediato, uint8_t endereco, SinaisD
 
 	if (sinais_de_controle.branch) {
         if (resultadoUla.zero) {
+			printf("Branch tomado. PC atual: %u, Imediato: %d\n", cpu->pc, imediato);
             cpu->pc = cpu->pc + imediato; //zero = 1 
         } 
-		else {
-            if (sinais_de_controle.incremento_pc){
-				cpu->pc++; //zero = 0
-			}
-        }
         return;
     }
 }
@@ -198,12 +194,12 @@ static void debug(const InstrucaoDecodificada instrucao_decodificada, const Sina
 	int8_para_binario(instrucao_decodificada.tipo);
 	printf(" Opcode: ");
 	int8_para_binario(instrucao_decodificada.opcode);
-	printf("\n RS: ");
+	printf("\nRS: ");
 	int8_para_binario(instrucao_decodificada.rs);
 
 	printf(" RT: ");
 	int8_para_binario(instrucao_decodificada.rt);
-	printf("\n RD: ");
+	printf("\nRD: ");
 	int8_para_binario(instrucao_decodificada.rd);
 	printf(" Funct: ");
 	int8_para_binario(instrucao_decodificada.funct);
@@ -211,24 +207,15 @@ static void debug(const InstrucaoDecodificada instrucao_decodificada, const Sina
 	printf("Endereco: %u\n", instrucao_decodificada.endereco);
 
 	printf("======= Sinais de Controle Gerados ======= \n");
-	printf("Controle ULA: ");
-	int8_para_binario(sinais_de_controle.controle_ula);
-	printf("\nEscrever Memoria: ");
-	int8_para_binario(sinais_de_controle.escrever_memoria);
-	printf("\nEscrever Reg: ");
-	int8_para_binario(sinais_de_controle.escrever_reg);
-	printf("\nMemoria para Reg: ");
-	int8_para_binario(sinais_de_controle.memoria_para_reg);
-	printf("\nULA Fonte: ");
-	int8_para_binario(sinais_de_controle.ula_fonte);
-	printf("\nReg Destino: ");
-	int8_para_binario(sinais_de_controle.reg_destino);
-	printf("\nIncremento PC: ");
-	int8_para_binario(sinais_de_controle.incremento_pc);
-	printf("\nJump:");
-	int8_para_binario(sinais_de_controle.jump);
-	printf("\nBranch:");
-	int8_para_binario(sinais_de_controle.branch);
+	printf("Controle ULA: %d\n", sinais_de_controle.controle_ula);
+	printf("Escrever Memoria: %d\n", sinais_de_controle.escrever_memoria);
+	printf("Escrever Reg: %d\n", sinais_de_controle.escrever_reg);
+	printf("Memoria para Reg: %d\n", sinais_de_controle.memoria_para_reg);
+	printf("ULA Fonte: %d\n", sinais_de_controle.ula_fonte);
+	printf("Reg Destino: %d\n", sinais_de_controle.reg_destino);
+	printf("Incremento PC: %d\n", sinais_de_controle.incremento_pc);
+	printf("Jump: %d\n", sinais_de_controle.jump);
+	printf("Branch: %d\n", sinais_de_controle.branch);
 
 	printf("\n======= Resultado da Operação na Ula =======\n");
 	printf("Resultado: %d\n", resultadoUla.resultado);
