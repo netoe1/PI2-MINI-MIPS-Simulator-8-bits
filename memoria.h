@@ -3,6 +3,7 @@
 #include "types.h"
 #include <stdint.h>
 #include <stdio.h>
+#include "utils.h"
 
 #pragma region CONSTANTES
 // Região para declaração de constantes
@@ -55,7 +56,7 @@ int8_t ler_registrador(const CPU *p, uint8_t id);                 // Ler registr
 
 #pragma region FUNCOES_GENERICAS
 
-void imprimirMemoria(CPU *p, TipoMemoria tipo, OpcaoBase base);     // Mostra todos os dados da memória
+void imprimirMemoria(const CPU *p, TipoMemoria tipo, OpcaoBase base);     // Mostra todos os dados da memória
 void resetarMemoria(CPU *p, TipoMemoria tipo);      // Reseta a memória de acordo com o seu tipo, irá zerar todos os dados.
 
 #pragma endregion FUNCOES_GENERICAS

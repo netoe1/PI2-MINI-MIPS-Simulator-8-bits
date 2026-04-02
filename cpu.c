@@ -96,7 +96,7 @@ static void executrar_ciclo(CPU *cpu)
 	// >>>>	ou depois do write back,por causa dos desvios (branch/jump) <<<<
 	resolver_desvio(cpu, instrucao_decodificada.imediato, instrucao_decodificada.endereco, sinais_de_controle, resultadoUla);
 	
-	debug(instrucao_decodificada, sinais_de_controle, resultadoUla, cpu);
+	debug_geral(instrucao_decodificada, sinais_de_controle, resultadoUla, cpu, 0);
 	
 }
 

@@ -32,11 +32,8 @@ void debug_geral(
     // opcao: 0 = Decimal, 1 = Hexa, 2 = Binario
 
 // Funcões de print de inteiros <stdint.h> para binário e hexadecimal
-void print_int16_binario(int16_t valor);
-void print_int8_binario(int8_t valor);
-void print_int8_hexa(int8_t valor);
-void print_int16_hexa(int16_t valor);
+
 void debug_binario();
-void debug_cpu();
+void estado_atual_cpu(const CPU *cpu);
 
 #endif

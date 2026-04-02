@@ -33,6 +33,14 @@ void int8_para_binario(int8_t valor) {
 	printf("%s", binario);
 }
 
+void int8_hexa(int8_t valor) {
+    printf("0x%02X", (uint8_t)valor);
+}
+
+void int16_hexa(int16_t valor) {
+    printf("0x%04X", (uint16_t)valor);
+}
+
 int8_t binario_para_int8(const char *binario) {
     return (int8_t)strtoul(binario, NULL, 2);
 }

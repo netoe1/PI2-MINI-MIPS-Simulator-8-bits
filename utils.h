@@ -16,4 +16,6 @@ uint8_t binario_para_int8_sem_sinal(const char *binario);
 int16_t binario_para_int16(const char *binario);
 uint16_t binario_para_int16_sem_sinal(const char *binario);
 
+void int8_hexa(int8_t valor);
+void int16_hexa(int16_t valor);
 # endif

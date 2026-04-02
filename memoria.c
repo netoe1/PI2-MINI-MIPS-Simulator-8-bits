@@ -1,5 +1,6 @@
 #include "memoria.h"
 #include <stdbool.h>
+#include "utils.h"
 
 
 #pragma region MEMORIA_DE_DADOS
@@ -62,13 +63,13 @@ int8_t ler_registrador(const CPU *p, uint8_t id){
 // Nas funçoes genéricas, você deve especificar o ponteiro da CPU e o tipo de memória.
 // A memória pode ser DADOS,INSTRUCAO ou REGISTRADOR
 
-void imprimirMemoria(CPU *p, TipoMemoria tipo, OpcaoBase base) {
+void imprimirMemoria(const CPU *p, TipoMemoria tipo, OpcaoBase base) {
     if (tipo == DADOS) {
         puts("\n++++++++++ MEMÓRIA DE DADOS ++++++++++");
         for (int i = 0; i < 256; i++) {
             printf("%3d: ", i);
-            if (base == HEXADECIMAL) print_int16_hexa(p->memoria_de_dados[i]);
-            else if (base == BINARIO) print_int16_binario(p->memoria_de_dados[i]);
+            if (base == HEXADECIMAL) int16_hexa(p->memoria_de_dados[i]);
+            else if (base == BINARIO) int16_para_binario(p->memoria_de_dados[i]);
             else printf("%d", p->memoria_de_dados[i]);
             printf(i % 4 == 3 ? "\n" : " | "); // Organiza em colunas como no Logisim
         }
@@ -78,8 +79,8 @@ void imprimirMemoria(CPU *p, TipoMemoria tipo, OpcaoBase base) {
         puts("\n++++++++++ MEMÓRIA DE PROGRAMA ++++++++++");
         for (int i = 0; i < 256; i++) {
             printf("%3d: ", i);
-            if (base == HEXADECIMAL) print_int16_hexa(p->memoria_de_instrucao[i]);
-            else if (base == BINARIO) print_int16_binario(p->memoria_de_instrucao[i]);
+            if (base == HEXADECIMAL) int16_hexa(p->memoria_de_instrucao[i]);
+            else if (base == BINARIO) int16_para_binario(p->memoria_de_instrucao[i]);
             else printf("%d", p->memoria_de_instrucao[i]);
             printf(i % 4 == 3 ? "\n" : " | ");
         }
@@ -89,8 +90,8 @@ void imprimirMemoria(CPU *p, TipoMemoria tipo, OpcaoBase base) {
         puts("\n++++++++++ BANCO DE REGS ++++++++++");
         for (int i = 0; i < 8; i++) {
             printf("R%d: ", i);
-            if (base == HEXADECIMAL) print_int8_hexa(p->banco_de_regs[i]);
-            else if (base == BINARIO) print_int8_binario(p->banco_de_regs[i]);
+            if (base == HEXADECIMAL) int8_hexa(p->banco_de_regs[i]);
+            else if (base == BINARIO) int8_para_binario(p->banco_de_regs[i]);
             else printf("%d", p->banco_de_regs[i]);
             printf(i % 2 == 1 ? "\n" : " | "); // 2 por linha para ficar legível
         }
